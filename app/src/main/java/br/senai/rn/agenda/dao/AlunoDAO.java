@@ -8,6 +8,7 @@ import br.senai.rn.agenda.models.Aluno;
 public class AlunoDAO {
 
     private final static List<Aluno> ALUNOS = new ArrayList<>();
+
     public void salva(Aluno aluno){
         ALUNOS.add(aluno);
     }

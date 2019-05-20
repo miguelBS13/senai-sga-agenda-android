@@ -6,10 +6,12 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import br.senai.rn.agenda.dao.AlunoDAO;
+import br.senai.rn.agenda.models.Aluno;
 
 public class ListaAlunosActivity extends AppCompatActivity {
 
@@ -43,6 +45,16 @@ public class ListaAlunosActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ListaAlunosActivity.this, FormularioAlunoActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        listaAlunos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Aluno alunoSelecionado  = dao.obterTodos().get(position);
+                Intent intent = new Intent(ListaAlunosActivity.this, FormularioAlunoActivity.class);
+                intent.putExtra("aluno", alunoSelecionado);
                 startActivity(intent);
             }
         });

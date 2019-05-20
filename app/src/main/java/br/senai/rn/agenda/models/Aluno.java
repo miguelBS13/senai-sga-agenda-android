@@ -1,6 +1,8 @@
 package br.senai.rn.agenda.models;
 
-public class Aluno {
+import java.io.Serializable;
+
+public class Aluno implements Serializable {
 
     private final String nome;
     private final String telefone;

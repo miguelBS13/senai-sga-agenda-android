@@ -32,6 +32,13 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         campoTelefone = findViewById(R.id.activity_formulario_aluno_et_telefone);
         campoEmail = findViewById(R.id.activity_formulario_aluno_et_email);
         botaoSalvar = findViewById(R.id.activity_formulario_aluno_botao_salvar);
+
+        Aluno aluno = (Aluno) getIntent().getSerializableExtra("aluno");
+        if (aluno != null) {
+            campoNome.setText(aluno.getNome());
+            campoTelefone.setText(aluno.getTelefone());
+            campoEmail.setText(aluno.getEmail());
+        }
     }
 
     private void definirEventos() {

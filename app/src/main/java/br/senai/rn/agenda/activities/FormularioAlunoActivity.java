@@ -11,12 +11,13 @@ import br.senai.rn.agenda.models.Aluno;
 
 public class FormularioAlunoActivity extends AppCompatActivity {
 
-    private final String TITULO_APPBAR = "Novo Aluno";
+    private String TITULO_APPBAR = "Novo Aluno";
     private EditText campoNome;
     private EditText campoTelefone;
     private EditText campoEmail;
     private Button botaoSalvar;
-    private AlunoDAO dao = new AlunoDAO();
+    private AlunoDAO dao;
+    private Aluno aluno;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +25,21 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_formulario_aluno);
         setTitle(TITULO_APPBAR);
         inicializarComponentes();
+        inicializarAluno();
         definirEventos();
+    }
+
+    private void inicializarAluno() {
+        dao = new AlunoDAO();
+        if (getIntent().hasExtra("aluno")){
+            aluno = (Aluno) getIntent().getSerializableExtra("aluno");
+            setTitle("Editar Aluno");
+            campoNome.setText(aluno.getNome());
+            campoTelefone.setText(aluno.getTelefone());
+            campoEmail.setText(aluno.getEmail());
+        } else {
+            aluno = new Aluno();
+        }
     }
 
     private void inicializarComponentes() {
@@ -32,34 +47,30 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         campoTelefone = findViewById(R.id.activity_formulario_aluno_et_telefone);
         campoEmail = findViewById(R.id.activity_formulario_aluno_et_email);
         botaoSalvar = findViewById(R.id.activity_formulario_aluno_botao_salvar);
-
-        Aluno aluno = (Aluno) getIntent().getSerializableExtra("aluno");
-        if (aluno != null) {
-            campoNome.setText(aluno.getNome());
-            campoTelefone.setText(aluno.getTelefone());
-            campoEmail.setText(aluno.getEmail());
-        }
     }
 
     private void definirEventos() {
         botaoSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Aluno alunoCriado = criarAluno();
-                salvarAluno(alunoCriado);
+                criarAluno();
+                salvarAluno();
             }
         });
     }
 
-    private Aluno criarAluno() {
+    private void criarAluno() {
         String nome = campoNome.getText().toString();
         String telefone = campoTelefone.getText().toString();
         String email = campoEmail.getText().toString();
-        return new Aluno(nome, telefone, email);
+
+        aluno.setNome(nome);
+        aluno.setTelefone(telefone);
+        aluno.setEmail(email);
     }
 
-    private void salvarAluno(Aluno aluno) {
-        dao.salva(aluno);
+    private void salvarAluno() {
+        dao.salvar(aluno);
         finish();
     }
 }

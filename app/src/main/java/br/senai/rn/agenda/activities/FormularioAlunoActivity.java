@@ -2,8 +2,8 @@ package br.senai.rn.agenda.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 
 import br.senai.rn.agenda.dao.AlunoDAO;
@@ -15,7 +15,6 @@ public class FormularioAlunoActivity extends AppCompatActivity {
     private EditText campoNome;
     private EditText campoTelefone;
     private EditText campoEmail;
-    private Button botaoSalvar;
     private AlunoDAO dao;
     private Aluno aluno;
 
@@ -46,18 +45,9 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         campoNome = findViewById(R.id.activity_formulario_aluno_et_nome);
         campoTelefone = findViewById(R.id.activity_formulario_aluno_et_telefone);
         campoEmail = findViewById(R.id.activity_formulario_aluno_et_email);
-        botaoSalvar = findViewById(R.id.activity_formulario_aluno_botao_salvar);
     }
 
-    private void definirEventos() {
-        botaoSalvar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                criarAluno();
-                salvarAluno();
-            }
-        });
-    }
+    private void definirEventos() {}
 
     private void criarAluno() {
         String nome = campoNome.getText().toString();
@@ -72,5 +62,23 @@ public class FormularioAlunoActivity extends AppCompatActivity {
     private void salvarAluno() {
         dao.salvar(aluno);
         finish();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_formulario_aluno_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int menuSelecionado = item.getItemId();
+
+        if (menuSelecionado == R.id.activity_formulario_aluno_menu_salvar){
+            criarAluno();
+            salvarAluno();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
